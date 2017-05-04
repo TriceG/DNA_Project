@@ -1,6 +1,13 @@
 Group Leader: Marshall Macduff
-Collaborators: Beatrice Goyette
-               Jordan Ozolins
+Collaborator: Beatrice Goyette
+               
 Course: ICS4U
 Teacher: Shawn Mckenzie
 Project Start Date: April, 2017
+Project End Date: June, 2017
+
+Usual Group Meetings: Monday -> 10:00am
+                      Thursday -> 4:00pm
+
+Project Name: DNA Gyzmo
+Screen size: 800x500 pixels
