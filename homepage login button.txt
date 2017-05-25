@@ -1,0 +1,39 @@
+#Declare start button variables
+startButtonSize = 50
+startButtonColor = color(100, 100, 50)
+startButtonOver = False
+
+def setup():
+    size (800, 500)
+    
+    #Declare start button perameters
+    global startButtonX, startButtonY
+    startButtonX = width / 1.5 - startButtonSize - 120
+    startButtonY = height / 8 - startButtonSize / 2
+    
+def draw():
+    background(255)
+    
+    #Draw start button
+    updateStartButton(mouseX, mouseY)
+    fill (startButtonColor)
+    stroke(255)
+    rect(startButtonX, startButtonY, startButtonSize, startButtonSize)
+    textSize(20)
+    text ("Start", 365, 30)
+
+def mousePressed():
+    
+    #If the start button is pressed the game launches
+    if startButtonOver:
+        placeholder = "Launch the game here"
+        #Launch game
+
+#Checks to see if mouse is over start button
+def overStartButton (x, y, width, height):
+    return x <= mouseX <= x + width and y <= mouseY <= y + height
+
+#Updates user interaction for start button
+def updateStartButton(x, y):
+    global startButtonOver
+    startButtonOver = overStartButton(startButtonX, startButtonY, startButtonSize, startButtonSize)
