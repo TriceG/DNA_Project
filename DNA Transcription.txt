@@ -1,0 +1,58 @@
+import random
+
+class Nucleotide():
+    def __init__(self, xPos, yPos, l, h, type, speed, colour):
+        self.x = xPos
+        self.y = yPos
+        self.l = l
+        self.h = h
+        self.type = type
+        self.speed = speed
+        self.colour = colour
+        
+    def display(self):
+        fill(self.colour, self.colour, self.colour)
+        rect(self.x,self.y,self.l,self.h)
+        
+    def move(self):
+        self.x += self.speed
+
+
+A = Nucleotide (0, 45, 25, 25, "Adenine", 0.5, 80)
+T = Nucleotide (0, 135, 25, 25, "Thymine", 0.5, 80)
+C = Nucleotide (0, 225, 25, 25, "Cytosine", 0.5, 80)
+G = Nucleotide (0, 315, 25, 25, "Guanine", 0.5, 80)
+U = Nucleotide (0, 405, 25, 25, "Uracil", 0.5, 80)
+
+nucleotide_list = [A, T, C, G, U]
+
+nucleotide_1 = random.choice(nucleotide_list)
+nucleotide_2 = placeholder = 0 #User input for this one
+
+
+for n in nucleotide_list:
+    if nucleotide_1 == A and nucleotide_2 == U:
+        placeholder = 0 # something something "Correct!"
+    elif nucleotide_1 == U and nucleotide_2 == A:
+        placeholder = 0 # something something "Correct!"
+    elif nucleotide_1 == C and nucleotide_2 == G:
+        placeholder = 0 # something something "Correct!"
+    elif nucleotide_1 == G and nucleotide_2 == C:
+        placeholder = 0 # something something "Correct!"
+    else:
+        placeholder = 0 # something something "Incorrect!"
+
+def setup():
+    size (800, 500)
+    background (255)
+    
+def draw():
+    background (255)
+    
+    for nucleotide in nucleotide_list:
+        nucleotide.display()
+        nucleotide.move()
+        
+        if nucleotide.x > 800:
+            for nucleotide in nucleotide_list:
+                nucleotide.speed = 0
