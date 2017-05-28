@@ -1,58 +1,256 @@
+#import random to generate nucleotides later
 import random
 
-class Nucleotide():
-    def __init__(self, xPos, yPos, l, h, type, speed, colour):
-        self.x = xPos
-        self.y = yPos
-        self.l = l
-        self.h = h
-        self.type = type
-        self.speed = speed
-        self.colour = colour
-        
-    def display(self):
-        fill(self.colour, self.colour, self.colour)
-        rect(self.x,self.y,self.l,self.h)
-        
-    def move(self):
-        self.x += self.speed
+#declare nucleotides
+A = ("Adenine")
+T = ("Thymine")
+C = ("Cytosine")
+G = ("Guanine")
+U = ("Uracil")
 
-
-A = Nucleotide (0, 45, 25, 25, "Adenine", 0.5, 80)
-T = Nucleotide (0, 135, 25, 25, "Thymine", 0.5, 80)
-C = Nucleotide (0, 225, 25, 25, "Cytosine", 0.5, 80)
-G = Nucleotide (0, 315, 25, 25, "Guanine", 0.5, 80)
-U = Nucleotide (0, 405, 25, 25, "Uracil", 0.5, 80)
-
+#put nucleotides into a list
 nucleotide_list = [A, T, C, G, U]
 
+#randomly select a nucleotide to be nucleotide_1 from the nucleotide_list
 nucleotide_1 = random.choice(nucleotide_list)
-nucleotide_2 = placeholder = 0 #User input for this one
+
+#declare size of nucleotides
+n1Size = 30
+ASize = 30
+TSize = 30
+CSize = 30
+GSize = 30
+USize = 30
+
+#declare nucleotide colours
+n1color = color(0,0,0)
+Acolor = color(50,10,180)
+Tcolor = color(100,180,100)
+Ccolor = color(250,80,200)
+Gcolor = color(250,140,40)
+Ucolor = color(240,0,0)
+
+#declare mouse over booleans
+overA = False
+overT = False
+overC = False
+overG = False
+overU = False
 
 
-for n in nucleotide_list:
-    if nucleotide_1 == A and nucleotide_2 == U:
-        placeholder = 0 # something something "Correct!"
-    elif nucleotide_1 == U and nucleotide_2 == A:
-        placeholder = 0 # something something "Correct!"
-    elif nucleotide_1 == C and nucleotide_2 == G:
-        placeholder = 0 # something something "Correct!"
-    elif nucleotide_1 == G and nucleotide_2 == C:
-        placeholder = 0 # something something "Correct!"
-    else:
-        placeholder = 0 # something something "Incorrect!"
-
+#game setup
 def setup():
+    
+    #declare default size and background
     size (800, 500)
     background (255)
     
-def draw():
-    background (255)
+    #nucleotide 1 position
+    global n1X, n1Y
+    n1X = width / 2 - n1Size - 10
+    n1Y = height / 8 - n1Size / 2
     
-    for nucleotide in nucleotide_list:
-        nucleotide.display()
-        nucleotide.move()
+    #nucleotide A position
+    global AX, AY
+    AX = width / 1.55 - ASize - 10
+    AY = height / 2 - ASize / 2
+    
+    #nucleotide T position
+    global TX, TY
+    TX = width / 2 - TSize - 10
+    TY = height / 2 - TSize / 2
+    
+    #nucleotide C position
+    global CX, CY
+    CX = width / 2.7 - CSize - 10
+    CY = height / 2 - CSize / 2
+    
+    #nucleotide G position
+    global GX, GY
+    GX = width / 4 - GSize - 10
+    GY = height / 2 - GSize / 2
+    
+    #nucleotide U position
+    global UX, UY
+    UX = width / 1.3 - USize - 10
+    UY = height / 2 - USize / 2
+    
+#draws game content
+def draw():
+    
+    #make background slightly shaded
+    background (200)
+    
+    #Draws, colors, and names nucleotide_1
+    stroke(255)
+    fill(n1color)
+    rect(n1X,n1Y,n1Size,n1Size)
+    for n in nucleotide_list:
+        if nucleotide_1 == A:
+            textSize(30)
+            text ("A", 365, 110)
+        elif nucleotide_1 == T:
+            textSize(30)
+            text ("T", 365, 110)
+        elif nucleotide_1 == C:
+            textSize(30)
+            text ("C", 365, 110)
+        elif nucleotide_1 == G:
+            textSize(30)
+            text ("G", 365, 110)
+        elif nucleotide_1 == U:
+            textSize(30)
+            text ("U", 365, 110)
+    
+    #Draws, colors, and names nucleotide A
+    updateA(mouseX, mouseY)
+    if overA:
+        fill(Acolor)
+    else:
+        fill(Acolor)
+    rect(AX,AY,ASize,ASize)
+    textSize(30)
+    text("A",482,230)
+    
+    #Draws, colors, and names nucleotide T
+    updateT(mouseX, mouseY)
+    if overT:
+        fill(Tcolor)
+    else:
+        fill(Tcolor)
+    rect(TX,TY,TSize,TSize)
+    textSize(30)
+    text("T",367,230)
+    
+    #Draws, colors, and names nucleotide C
+    updateC(mouseX, mouseY)
+    if overC:
+        fill(Ccolor)
+    else:
+        fill(Ccolor)
+    rect(CX,CY,CSize,CSize)
+    textSize(30)
+    text("C",260,230)
+    
+    #Draws, colors, and names nucleotide G
+    updateG(mouseX, mouseY)
+    if overG:
+        fill(Gcolor)
+    else:
+        fill(Gcolor)
+    rect(GX,GY,GSize,GSize)
+    textSize(30)
+    text("G",165,230)
+    
+    #Draws, colors, and names nucleotide U
+    updateU(mouseX, mouseY)
+    if overU:
+        fill(Ucolor)
+    else:
+        fill(Ucolor)
+    rect(UX,UY,USize,USize)
+    textSize(30)
+    text("U",580,230)
+    
+#logic for button checking of nucleotide A
+def checkA (x, y, width, height):
+    return x <= mouseX <= x + width and y <= mouseY <= y + height
+
+#Checks for mouse over nucleotide A
+def updateA(x, y):
+    global overA
+    overA = checkA (AX,AY,ASize,ASize)
+ 
+#logic for button checking of nucleotide T
+def checkT (x, y, width, height):
+    return x <= mouseX <= x + width and y <= mouseY <= y + height
+
+#Checks for mouse over nucleotide T
+def updateT(x, y):
+    global overT
+    overT = checkT (TX,TY,TSize,TSize)
+
+#logic for button checking of nucleotide C
+def checkC (x, y, width, height):
+    return x <= mouseX <= x + width and y <= mouseY <= y + height
+ 
+#Checks for mouse over nucleotide C
+def updateC(x, y):
+    global overC
+    overC = checkC (CX,CY,CSize,CSize)
+
+#logic for button checking of nucleotide G    
+def checkG (x, y, width, height):
+    return x <= mouseX <= x + width and y <= mouseY <= y + height
+
+#Checks for mouse over nucleotide G
+def updateG(x, y):
+    global overG
+    overG = checkG (GX,GY,GSize,GSize)
+
+#logic for button checking of nucleotide U    
+def checkU (x, y, width, height):
+    return x <= mouseX <= x + width and y <= mouseY <= y + height
+
+#Checks for mouse over nucleotide U
+def updateU(x, y):
+    global overU
+    overU = checkU (UX,UY,USize,USize)
+
+#checks for mouse clicks on the nucleotides
+def mousePressed():
         
-        if nucleotide.x > 800:
-            for nucleotide in nucleotide_list:
-                nucleotide.speed = 0
+        #checks if user clicked A to match with T or U
+        if overA:
+            if nucleotide_1 == T or nucleotide_1 == U:
+                fill(n1color)
+                textSize(30)
+                text("Correct", 480, 30)
+            else:
+                fill(n1color)
+                textSize(30)
+                text("Incorrect", 480, 30)
+                
+        #checks if user clicked T to match with A       
+        elif overT:
+            if nucleotide_1 == A:
+                fill(n1color)
+                textSize(30)
+                text("Correct", 480, 30)
+            else: 
+                fill(n1color)
+                textSize(30)
+                text("Incorrect", 480, 30)        
+                
+        #checks if user clicked C to match with G        
+        elif overC:
+            if nucleotide_1 == G:
+                fill(n1color)
+                textSize(30)
+                text("Correct", 480, 30)        
+            else: 
+                fill(n1color)
+                textSize(30)
+                text("Incorrect", 480, 30)
+        
+        #checks if user clicked G to match with C        
+        elif overG:
+            if nucleotide_1 == C:
+                fill(n1color)
+                textSize(30)
+                text("Correct", 480, 30)
+            else: 
+                fill(n1color)
+                textSize(30)
+                text("Incorrect", 480, 30)
+        
+        #checks if user clicked U to match with A        
+        elif overU:
+            if nucleotide_1 == A:
+                fill(n1color)
+                textSize(30)
+                text("Correct", 480, 30)
+            else: 
+                fill(n1color)
+                textSize(30)
+                text("Incorrect", 480, 30)
