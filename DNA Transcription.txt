@@ -199,58 +199,70 @@ def updateU(x, y):
 
 #checks for mouse clicks on the nucleotides
 def mousePressed():
+        #declaring nucleotide_1 (the generated nucleotide) in mousePressed() to allow for random generation of a new nucleotide_1 after the user on a nucleotide
+        global nucleotide_1
         
-        #checks if user clicked A to match with T or U
+        #checks if user clicked A to match with T or U, generates a new nucleotide either way 
         if overA:
             if nucleotide_1 == T or nucleotide_1 == U:
                 fill(n1color)
                 textSize(30)
                 text("Correct", 480, 30)
+                nucleotide_1 = random.choice(nucleotide_list)
             else:
                 fill(n1color)
                 textSize(30)
                 text("Incorrect", 480, 30)
+                nucleotide_1 = random.choice(nucleotide_list)
                 
-        #checks if user clicked T to match with A       
+        #checks if user clicked T to match with A, generates a new nucleotide either way        
         elif overT:
             if nucleotide_1 == A:
                 fill(n1color)
                 textSize(30)
                 text("Correct", 480, 30)
+                nucleotide_1 = random.choice(nucleotide_list)
             else: 
                 fill(n1color)
                 textSize(30)
-                text("Incorrect", 480, 30)        
+                text("Incorrect", 480, 30)  
+                nucleotide_1 = random.choice(nucleotide_list)      
                 
-        #checks if user clicked C to match with G        
+        #checks if user clicked C to match with G, generates a new nucleotide either way         
         elif overC:
             if nucleotide_1 == G:
                 fill(n1color)
                 textSize(30)
-                text("Correct", 480, 30)        
+                text("Correct", 480, 30)
+                nucleotide_1 = random.choice(nucleotide_list)
             else: 
                 fill(n1color)
                 textSize(30)
                 text("Incorrect", 480, 30)
+                nucleotide_1 = random.choice(nucleotide_list)
         
-        #checks if user clicked G to match with C        
+        #checks if user clicked G to match with C, generates a new nucleotide either way         
         elif overG:
             if nucleotide_1 == C:
                 fill(n1color)
                 textSize(30)
                 text("Correct", 480, 30)
+                nucleotide_1 = random.choice(nucleotide_list)
             else: 
                 fill(n1color)
                 textSize(30)
                 text("Incorrect", 480, 30)
+                nucleotide_1 = random.choice(nucleotide_list)
         
-        #checks if user clicked U to match with A        
+        #checks if user clicked U to match with A, generates a new nucleotide either way   
         elif overU:
             if nucleotide_1 == A:
                 fill(n1color)
                 textSize(30)
                 text("Correct", 480, 30)
+                nucleotide_1 = random.choice(nucleotide_list)
             else: 
                 fill(n1color)
                 textSize(30)
                 text("Incorrect", 480, 30)
+                nucleotide_1 = random.choice(nucleotide_list)
