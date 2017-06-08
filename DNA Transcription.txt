@@ -53,7 +53,7 @@ def setup():
     global n1X, n1Y
     n1X = width / 2 - n1Size - 10
     n1Y = height / 8 - n1Size / 2
-    
+     
     #nucleotide A position
     global AX, AY
     AX = width / 1.55 - ASize - 10
