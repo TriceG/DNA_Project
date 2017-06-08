@@ -13,67 +13,81 @@
 #------------------------------
 
 # Make a class that creates dragable objects
-class circle():
-    
+class Circle():
     def __init__(self, centerX, centerY, radius):
         self.r = radius
         self.x = centerX
         self.y = centerY
-        
     def overCircle(self):
         #cursor distance from circle centre is less than radius
         #distance from from cursor to centre of circle
-        if sqrt((self.x-mouseX)^2 + (self.y-mouseY)^2)<self.r:
+        if sqrt((self.x-mouseX)**2 + (self.y-mouseY)**2)<self.r:
             return True
         else: 
             return False
-        
-    #def drawCircle(self):
-        #ellipse(centerX, centerY, radius)
-    '''
     def locked(self):
-        if mouseClicked and self.overCircle:
+        if mousePressed and self.overCircle():
             return True
         else:
             return False
-    '''
-
-
-class Sugar():
-    
+    def drag(self):
+        if mouseDragged and self.locked():
+            self.x = mouseX
+            self.y = mouseY
+            
+class Pentagon():
     def __init__(self, x, y):
         self.x = x
         self.y = y
-    
     def overSugar(self):
-        #number of sides
-        n = 5
-        #formula for finding the radius
-        radius = 15/(2*sin(180/n))
-        if sqrt((self.x-mouseX)^2 + (self.y-mouseY)^2)<radius:
+        #radius of a pentagon with side length of 15
+        radius = 12.75976
+        if sqrt((self.x-mouseX)**2 + (self.y-mouseY)**2)<radius:
             return True
         else:
             return False
-        
+    def locked(self):
+        if mousePressed and self.overSugar():
+            return True
+        else: 
+            return False
+    def drag(self):
+        if mouseDragged and self.locked():
+            self.x = mouseX
+            self.y = mouseY
     
+class Rectangle():
+    def __init__(self, x, y, l, w):
+        self.x = x
+        self.y = y
+        self.l = l
+        self.w = w
+    def overRect(self):
+        if mouseX > (self.x - self.l/2) and mouseX < (self.x + self.l/2) and mouseY > (self.y-self.w/2) and mouseY < (self.y+self.w/2):
+            return True
+        else:
+            return False
+    def locked(self):
+        if mousePressed and self.overRect():
+            return True
+        else: 
+            return False
+    def drag(self):
+        if mouseDragged and self.locked():
+            self.x = mouseX
+            self.y = mouseY
+
 #phosphate group
-phosphate = circle(200, 300, 10)
-global ellX, ellY, circleSize, locked, overCircle, xOffSet, yOffSet
-ellX = phosphate.x
-ellY = phosphate.y
-locked = False
-xOffSet = 0.0
-yOffSet = 0.0
-
+phosphate = Circle(200, 300, 10)
 #Sugar molecule
-sugar = Sugar(400.0, 300.0)
-sugarX = sugar.x
-sugarY = sugar.y
+sugar = Pentagon(100, 100)
+#amino acid
+amino = Rectangle(200, 200, 28, 13)
 
-    
 def setup():
     size (800, 500)
     ellipseMode(CENTER)
+    rectMode(CENTER)
    
 #create a polygon with side length 15.
 def sugarMol(x, y):
@@ -106,46 +120,24 @@ def DNAshape():
 def draw():
     background(255)
     DNAshape()
-    sugarMol(100, 100)
-    global ellX, ellY, circleSize, locked, overCircle
     #if mouse over circle
-    if phosphate.overCircle():
-        #overCircle = True
+    if phosphate.overCircle() or sugar.overSugar() or amino.overRect():
         cursor(HAND)
-        if not locked:
+        if not phosphate.locked() or not sugar.locked() or not amino.locked():
             fill(100)
     #if mouse not over circle
     else:
-        #overCircle = False
         cursor(ARROW)
-    
-    #draw circle to be dragged
+    #draw shapes to be dragged
+    sugarMol(sugar.x, sugar.y)
     ellipse(phosphate.x, phosphate.y, 2*phosphate.r, 2*phosphate.r)
+    rect(amino.x, amino.y, amino.l, amino.w)
+    
+    phosphate.drag()
+    sugar.drag()
+    amino.drag()
+    
 
-#lock the button on the cursor when mouse is pressed    
-def mousePressed():
-    global ellX, ellY, locked, overCircle, xOffSet, yOffSet
-    if phosphate.overCircle():
-        locked = True
-        stroke(0)
-        fill(0)
-    else:
-        locked = False
-        stroke(100)
-        fill(100)
-        
-    xOffSet = mouseX - ellX
-    yOffSet = mouseY - ellY
-
-#change the circle position as mouse is dragged
 def mouseDragged():
-    global ellX, ellY, locked, xOffSet, yOffSet
-    if locked:
-        ellX = mouseX - xOffSet
-        ellY = mouseY - yOffSet
-        
-#release the shape when mouse is released
-def mouseReleased():
-    global locked
-    locked = False
+    " "
         
