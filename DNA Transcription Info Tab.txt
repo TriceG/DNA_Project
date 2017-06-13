@@ -1,0 +1,12 @@
+def setup():
+    
+    size (800, 500)
+    background (255)
+    
+def draw():
+    
+    background (200)
+    
+    fill(20,20,20)
+    textSize(20)
+    text("Matching Nucleotide Sequences: \n Adenine (A) matches with Thymine (T) and Uracil (U)\n Guanine (G) matches with Cytosine (C)\n\n ~After each selection you make, a new nucleotide will be generated. \n ~Your correct and incorrect choices will be tallied for you to see. \n ~Play until you want to exit.", 20, 30)
