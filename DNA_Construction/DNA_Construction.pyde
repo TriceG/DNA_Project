@@ -103,23 +103,6 @@ def sugarMol(x, y):
     vertex(x-12.14, y-3.95)
     endShape()
 
-#draw a DNA element
-def DNAshape():
-    beginShape()
-    ellipseMode(CENTER)
-    ellipse(400, 250, 20, 20)
-    line(410, 260, 415, 265)
-    vertex(415, 265)
-    vertex(430, 255)
-    vertex(445, 265)
-    vertex(438, 280)
-    vertex(422, 280)
-    vertex(415, 265)
-    line(445, 265, 455, 265)
-    rectMode(CENTER)
-    rect(469, 265, 28, 13)
-    endShape() 
-    
 def distance(ax, ay, bx, by):
     distance = abs(sqrt((bx-ax)**2 + (by-ay)**2))
     if distance < 20:
@@ -129,7 +112,6 @@ def distance(ax, ay, bx, by):
            
 def draw():
     background(255)
-    DNAshape()
     text(str(second()), 700, 100)
     #if mouse over circle
     if phosphate.overCircle() or sugar.overSugar() or amino.overRect():
