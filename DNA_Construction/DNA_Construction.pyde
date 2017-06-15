@@ -12,6 +12,7 @@
 #
 #------------------------------
 
+
 # Make a class that creates dragable objects
 class Circle():
     def __init__(self, centerX, centerY, radius):
@@ -34,6 +35,7 @@ class Circle():
         if mouseDragged and self.locked():
             self.x = mouseX
             self.y = mouseY
+
             
 class Pentagon():
     def __init__(self, x, y):
@@ -84,6 +86,7 @@ sugar = Pentagon(100, 100)
 #amino acid
 amino = Rectangle(200, 200, 28, 13)
 
+
 def setup():
     size (800, 500)
     ellipseMode(CENTER)
@@ -116,10 +119,18 @@ def DNAshape():
     rectMode(CENTER)
     rect(469, 265, 28, 13)
     endShape() 
+    
+def distance(ax, ay, bx, by):
+    distance = abs(sqrt((bx-ax)**2 + (by-ay)**2))
+    if distance < 20:
+        return True
+    else:
+        return False
            
 def draw():
     background(255)
     DNAshape()
+    text(str(second()), 700, 100)
     #if mouse over circle
     if phosphate.overCircle() or sugar.overSugar() or amino.overRect():
         cursor(HAND)
@@ -130,14 +141,61 @@ def draw():
         cursor(ARROW)
     #draw shapes to be dragged
     sugarMol(sugar.x, sugar.y)
-    ellipse(phosphate.x, phosphate.y, 2*phosphate.r, 2*phosphate.r)
-    rect(amino.x, amino.y, amino.l, amino.w)
     
-    phosphate.drag()
-    sugar.drag()
-    amino.drag()
+    if distance(sugar.x, sugar.y, phosphate.x, phosphate.y):
+        lockP = True
+        phosphate.x = sugar.x
+        phosphate.y = sugar.y
+    else:
+        lockP = False
     
+    if not lockP:
+        ellipse(phosphate.x, phosphate.y, 2*phosphate.r, 2*phosphate.r)
+        phosphate.drag()
+        sugar.drag()
+    elif lockP:
+        ellipse(sugar.x-20, sugar.y-20, 2*phosphate.r, 2*phosphate.r)
+        sugar.drag()
+    
+    if distance(sugar.x, sugar.y, amino.x, amino.y):
+        lockA = True
+        amino.x = sugar.x
+        amino.y = sugar.y
+    else:
+        lockA = False
+        
+    if not lockA:
+        rect(amino.x, amino.y, amino.l, amino.w)
+        amino.drag()
+    elif lockA:
+        rect(sugar.x+30, sugar.y, amino.l, amino.w)
+        sugar.drag()
+    
+    #TIMER
 
 def mouseDragged():
     " "
         
+#def mouseClicked():
+    '''
+    #STOPWATCH
+    millisec = 0
+    seconds = 0
+    minutes = 0
+    start = True
+    print(start)
+    if start:
+        print('started')
+        if(millis()/100)%10 != millisecs:
+            millisecs += 1
+            
+        if millisecs >= 10:
+            millisecs -= 10
+            seconds+= 1
+    
+        if seconds >= 60:
+            seconds -= 60
+            minutes+= 1
+        
+        print(nf(minutes, 2), ':', nf(seconds, 2), ':', nf(millisecs, 1))
+    '''
