@@ -80,11 +80,12 @@ class Rectangle():
             self.y = mouseY
 
 #phosphate group
-phosphate = Circle(200, 300, 10)
+phosphate = Circle(200, 400, 10)
 #Sugar molecule
-sugar = Pentagon(100, 100)
+sugar = Pentagon(375, 400)
 #amino acid
-amino = Rectangle(200, 200, 28, 13)
+amino = Rectangle(530, 400, 28, 13)
+minutes = 0 
 
 
 def setup():
@@ -109,10 +110,21 @@ def distance(ax, ay, bx, by):
         return True
     else:
         return False
-           
+   
 def draw():
+    global minutes
     background(255)
-    text(str(second()), 700, 100)
+    fill(0)
+    text("Phosphate", 175, 375)
+    text("5-Carbon Sugar", 325, 375)
+    text("Nitrogenous Base", 485, 375)
+    #TIMER#
+    millisecs = int(millis()/100)%10
+    seconds = int(millis()/1000)%60
+    if seconds >= 60:
+        minutes+= 1
+    s = "Time Elapsed: " + str(minutes) + ":" + str(seconds) + "." + str(millisecs)
+    text(s, 600, 100)
     #if mouse over circle
     if phosphate.overCircle() or sugar.overSugar() or amino.overRect():
         cursor(HAND)
@@ -153,31 +165,6 @@ def draw():
         rect(sugar.x+30, sugar.y, amino.l, amino.w)
         sugar.drag()
     
-    #TIMER
-
 def mouseDragged():
     " "
         
-#def mouseClicked():
-    '''
-    #STOPWATCH
-    millisec = 0
-    seconds = 0
-    minutes = 0
-    start = True
-    print(start)
-    if start:
-        print('started')
-        if(millis()/100)%10 != millisecs:
-            millisecs += 1
-            
-        if millisecs >= 10:
-            millisecs -= 10
-            seconds+= 1
-    
-        if seconds >= 60:
-            seconds -= 60
-            minutes+= 1
-        
-        print(nf(minutes, 2), ':', nf(seconds, 2), ':', nf(millisecs, 1))
-    '''
