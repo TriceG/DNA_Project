@@ -90,9 +90,9 @@ def setup():
 
 def draw():
     global page
+    
     if page == 0:   
         background(300) 
-        display_page_num()
         ####### Draw code for Game_Selection_Page #######
         fill(0)
         textSize(48) 
@@ -111,9 +111,7 @@ def draw():
         ellipse(20, 20, 100, 100)
     elif page == 2:
         background (200)
-        display_page_num()
         # put draw code here for transcription page
-        #make background slightly shaded
     
         #draw correct/incorrect counters
         fill(n1color)
@@ -257,14 +255,6 @@ def checkU (x, y, width, height):
 def updateU(x, y):
     global overU
     overU = checkU (UX,UY,USize,USize)
-
-def display_page_num():
-    global page
-    textSize(20)
-    fill(200)
-    stroke(0)
-    strokeWeight(1.5)
-    text("Page #" + str(page), 10,580)
     
 def mouseClicked():
     global page
