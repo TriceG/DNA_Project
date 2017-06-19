@@ -51,8 +51,6 @@ def draw():
     #if mouse over circle
     if phosphate.overCircle() or sugar.overSugar() or amino.overRect():
         cursor(HAND)
-        if not phosphate.locked() or not sugar.locked() or not amino.locked():
-            fill(100)
     #if mouse not over circle
     else:
         cursor(ARROW)
@@ -90,7 +88,14 @@ def draw():
     
     if lockP and lockA:
         start = False
-        text(s, 100, 100)
+        textSize(16)
+        text(s, 300, 100)
+        fill(238, 18, 255)
+        textSize(30)
+        rect(75, 450, 75, 45)
+        fill(0)
+        text("Quit", 40, 460)
+        textSize(12) 
     
 def mouseDragged():
     " "

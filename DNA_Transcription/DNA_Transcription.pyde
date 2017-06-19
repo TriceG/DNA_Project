@@ -1,16 +1,27 @@
 import random
 from Shape_Classes import*
+from ButtonClass import*
 
 page = 0
 
+#import the buttons
+b = Button()
 #phosphate group
 phosphate = Circle(200, 400, 10)
 #Sugar molecule
 sugar = Pentagon(375, 400)
 #amino acid
 amino = Rectangle(530, 400, 28, 13)
+#phosphate group
+p = Circle(200, 400, 10)
+#Sugar molecule
+s = Pentagon(375, 400)
+#amino acid
+nt = Rectangle(530, 400, 28, 13)
 minutes = 0 
 d = 0
+startLevel = False
+t = ""
 
 #declare nucleotides
 A = ("Adenine")
@@ -101,7 +112,8 @@ def setup():
 def draw():
     global page
     if page == 0:   
-        background(300) 
+        background(255) 
+        rectMode(CORNER)
         display_page_num()
         ####### Draw code for Game_Selection_Page #######
         fill(0)
@@ -114,6 +126,8 @@ def draw():
         fill(0)
         text('DNA Structure', 235, 250)
         text('Base Pairs', 275, 400)
+        
+    #DNA Construction Game easy level
     elif page == 1:   
         background(300)
         size (800, 500)
@@ -176,8 +190,11 @@ def draw():
             text("You Got It!!!", 300, 100)
             fill(238, 18, 255)
             rect(75, 450, 75, 45)
+            #Next Level button
+            rect(700, 450, 160, 45)
             fill(0)
             text("Back", 40, 460)
+            text("Next Level", 625, 460)
         
     elif page == 2:
         background (200)
@@ -273,7 +290,117 @@ def draw():
         rect(backX, backY, back_size, back_size)
         textSize(30)
         text("Back", 345, 405)
-            
+    
+    #Game1 Introduction Page
+    elif page == 3: 
+        background(255)
+        textSize(20)
+        DNAshape()
+        textSize(30)
+        fill(139, 0, 255)
+        text("The Structure of DNA", 50, 50)
+        textSize(20)
+        fill(0)
+        text("- DNA is a double helical structure", 50, 100)
+        text("- Each nucleotide is made up of a phosphate group, a 5-carbon sugar,", 50, 150)
+        text(" and a nitrogenous base (ACGT).", 50, 200)
+        fill(95, 203, 2)
+        text("Click and drag the components DNA to form a nucleotide!", 50, 400)
+        rectMode(CORNER)
+        rect(640, 375, 125, 50)
+        fill(0)
+        textSize(35)
+        text("START", 647, 410)
+        
+    #Game1 next level
+    if page == 4:
+        background(255)
+        global minutes, startLevel, t
+        print(startLevel)
+        textSize(12)
+        fill(0)
+        text("Phosphate", 175, 375)
+        text("5-Carbon Sugar", 325, 375)
+        text("Nitrogenous Base", 485, 375)
+        #TIMER#
+        if startLevel == True: 
+            millisecs = int(millis()/100)%10
+            seconds = int(millis()/1000)%60
+            if seconds >= 60:
+                minutes+= 1
+            t = "Time Elapsed: " + str(minutes) + ":" + str(seconds) + "." + str(millisecs)
+            text(t, 600, 100)
+        #if mouse over circle
+        if p.overCircle() or s.overSugar() or nt.overRect():
+            cursor(HAND)
+        #if mouse not over circle
+        else:
+            cursor(ARROW)
+        #draw shapes to be dragged
+        sugarMol(s.x, s.y)
+    
+        if distance(s.x, s.y, p.x, p.y):
+            lockP = True
+            p.x = s.x
+            p.y = s.y
+        else:
+            lockP = False
+    
+        if not lockP:
+            ellipse(p.x, p.y, 2*p.r, 2*p.r)
+            p.drag()
+            s.drag()
+        elif lockP:
+            ellipse(s.x-20, s.y-20, 2*p.r, 2*p.r)
+            s.drag()
+    
+        if distance(s.x, s.y, nt.x, nt.y):
+            lockA = True
+            nt.x = s.x
+            nt.y = s.y
+        else:
+            lockA = False
+        
+        if not lockA:
+            rect(nt.x, nt.y, nt.l, nt.w)
+            nt.drag()
+        elif lockA:
+            rect(s.x+30, s.y, nt.l, nt.w)
+            s.drag()
+    
+        if lockP and lockA:
+            start = False
+            textSize(16)
+            text(t, 300, 100)
+            fill(238, 18, 255)
+            textSize(30)
+            rect(75, 450, 75, 45)
+            fill(0)
+            text("Quit", 40, 460)
+            textSize(12) 
+
+#draw a DNA element
+def DNAshape():
+    fill(255, 132, 8)
+    beginShape()
+    ellipseMode(CENTER)
+    ellipse(400, 250, 20, 20)
+    line(410, 260, 415, 265)
+    vertex(415, 265)
+    vertex(430, 255)
+    vertex(445, 265)
+    vertex(438, 280)
+    vertex(422, 280)
+    vertex(415, 265)
+    line(445, 265, 455, 265)
+    rectMode(CENTER)
+    rect(469, 265, 28, 13)
+    endShape() 
+    fill(0)
+    text("P", 395, 257)
+    text("S", 425, 275)
+    text("N", 463, 273)
+        
 #create a polygon with side length 15.
 def sugarMol(x, y):
     beginShape()
@@ -356,16 +483,22 @@ def display_page_num():
     text("Page #" + str(page), 10,580)
     
 def mouseClicked():
-    global page
+    global page, startLevel
     # If on page 0 (menu) and construction game button clicked, set the page to 1 (B's page)
-    if page == 0 and mouseX > 225 and mouseX < 575 and mouseY >  200 and mouseY < 275:
-        page = 1
+    if page == 0 and b.game1Btn():
+        page = 3
     # If on page 0 (menu) and transcription game button clicked, set the page to 2 (M's page)
-    elif page == 0 and mouseX > 250 and mouseX < 550 and mouseY > 350 and mouseY < 425:
+    elif page == 0 and b.game2Btn():
         page = 2
-    elif page == 1:
+    elif page == 1 and b.game1Back():
         # put mouse clicked code here for DNA constructiom
-        pass
+        page = 0
+    elif page == 1 and b.game1Next():
+        page = 4
+        startLevel = True
+    elif page == 3 and b.game1Play():
+        page = 1
+    
     elif page == 2:
         #mouse clicked code here for DNA pairs
         #declaring nucleotide_1, correct, and incorrect to be continuously used in mousePressed()

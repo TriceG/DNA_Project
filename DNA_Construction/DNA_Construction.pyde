@@ -105,8 +105,20 @@ def draw():
         text("You Got It!!!", 300, 100)
         fill(238, 18, 255)
         rect(75, 450, 75, 45)
+        #Next Level button
+        rect(700, 450, 160, 45)
         fill(0)
         text("Back", 40, 460)
+        text("Next Level", 625, 460)
+        
+    if mouseX > 37.5 and mouseX < 112.5 and mouseY > 427.5 and mouseY < 572.5:
+        cursor(HAND)
+    elif mouseX > 620 and mouseX < 780 and mouseY > 427.5 and mouseY < 572.5:
+        cursor(HAND)
+    else:
+        cursor(ARROW)
+
+        
     
 def mouseDragged():
     " "
