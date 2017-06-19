@@ -1,17 +1,3 @@
-#------------------------------
-#
-# Name: DNA_Construction
-#
-# Description: Game #1 - assembling DNA elements
-# 
-# Main Author: goyette.beatrice
-#
-# Collaborator: macduff.marchall
-#
-# Date: 29/05/2017
-#
-#------------------------------
-
 from Shape_Classes import*
 
 #phosphate group
@@ -21,7 +7,7 @@ sugar = Pentagon(375, 400)
 #amino acid
 amino = Rectangle(530, 400, 28, 13)
 minutes = 0 
-d = 0
+start = True
 
 
 def setup():
@@ -40,41 +26,45 @@ def sugarMol(x, y):
     vertex(x-12.14, y-3.95)
     endShape()
 
-
 def distance(ax, ay, bx, by):
-    global d
-    d = abs(sqrt((bx-ax)**2 + (by-ay)**2))
-    if d < 20:
+    distance = abs(sqrt((bx-ax)**2 + (by-ay)**2))
+    if distance < 20:
         return True
     else:
         return False
-   
+s = ""
 def draw():
-    global minutes, distance
+    global minutes, start, s
     background(255)
     fill(0)
-    textSize(15)
-    text("Phosphate", 165, 375)
-    text("5-Carbon Sugar", 315, 375)
+    text("Phosphate", 175, 375)
+    text("5-Carbon Sugar", 325, 375)
     text("Nitrogenous Base", 485, 375)
+    #TIMER#
+    if start: 
+        millisecs = int(millis()/100)%10
+        seconds = int(millis()/1000)%60
+        if seconds >= 60:
+            minutes+= 1
+        s = "Time Elapsed: " + str(minutes) + ":" + str(seconds) + "." + str(millisecs)
+        text(s, 600, 100)
     #if mouse over circle
-    fill(0, 0, 255, 255-d)
     if phosphate.overCircle() or sugar.overSugar() or amino.overRect():
         cursor(HAND)
         if not phosphate.locked() or not sugar.locked() or not amino.locked():
-            fill(0, 0, 255, 255-d)
+            fill(100)
     #if mouse not over circle
     else:
         cursor(ARROW)
     #draw shapes to be dragged
     sugarMol(sugar.x, sugar.y)
+    
     if distance(sugar.x, sugar.y, phosphate.x, phosphate.y):
         lockP = True
         phosphate.x = sugar.x
         phosphate.y = sugar.y
     else:
         lockP = False
-    fill(0, 0, 255, 255-d)
     
     if not lockP:
         ellipse(phosphate.x, phosphate.y, 2*phosphate.r, 2*phosphate.r)
@@ -83,14 +73,13 @@ def draw():
     elif lockP:
         ellipse(sugar.x-20, sugar.y-20, 2*phosphate.r, 2*phosphate.r)
         sugar.drag()
-        
+    
     if distance(sugar.x, sugar.y, amino.x, amino.y):
         lockA = True
         amino.x = sugar.x
         amino.y = sugar.y
     else:
         lockA = False
-    fill(0, 0, 255, 255-d)
         
     if not lockA:
         rect(amino.x, amino.y, amino.l, amino.w)
@@ -98,16 +87,10 @@ def draw():
     elif lockA:
         rect(sugar.x+30, sugar.y, amino.l, amino.w)
         sugar.drag()
-        
+    
     if lockP and lockA:
-        fill(53, 10, 250)
-        textSize(30)
-        text("You Got It!!!", 300, 100)
-        fill(238, 18, 255)
-        rect(75, 450, 75, 45)
-        fill(0)
-        text("Back", 40, 460)
+        start = False
+        text(s, 100, 100)
     
 def mouseDragged():
     " "
-        
