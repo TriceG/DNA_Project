@@ -45,3 +45,10 @@ class Button():
         else:
             return False
     
+    #Reset button on level2 game1
+    def game1Reset(self):
+        if mouseX > 656 and mouseX < 744 and mouseY > 427.5 and mouseY < 572.5:
+            return True
+        else:
+            return False
+    

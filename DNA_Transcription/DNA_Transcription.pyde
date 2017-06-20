@@ -22,6 +22,7 @@ minutes = 0
 d = 0
 startLevel = False
 t = ""
+startTime = 0
 
 #declare nucleotides
 A = ("Adenine")
@@ -110,11 +111,11 @@ def setup():
     UY = height / 2 - USize / 2
 
 def draw():
-    global page
+    global page, startTime
     if page == 0:   
-        background(255) 
+        background(175) 
+        stroke(0)
         rectMode(CORNER)
-        display_page_num()
         ####### Draw code for Game_Selection_Page #######
         fill(0)
         textSize(48) 
@@ -130,10 +131,10 @@ def draw():
     #DNA Construction Game easy level
     elif page == 1:   
         background(300)
+        stroke(0)
         size (800, 500)
         ellipseMode(CENTER)
         rectMode(CENTER)
-        display_page_num()
         # put draw code here for dna construction page
         global minutes, distance
         background(255)
@@ -198,10 +199,10 @@ def draw():
         
     elif page == 2:
         background (200)
-        display_page_num()
         # put draw code here for transcription page
-        #make background slightly shaded
-    
+        if incorrect == 3:
+            textSize(20)
+            text("3 strikes, you lose \n      click BACK", 290,150)
         #draw correct/incorrect counters
         fill(n1color)
         textSize(30)
@@ -289,11 +290,12 @@ def draw():
             fill(backColor)
         rect(backX, backY, back_size, back_size)
         textSize(30)
-        text("Back", 345, 405)
+        text("BACK", 338, 405)
     
     #Game1 Introduction Page
     elif page == 3: 
         background(255)
+        stroke(0)
         textSize(20)
         DNAshape()
         textSize(30)
@@ -315,8 +317,8 @@ def draw():
     #Game1 next level
     if page == 4:
         background(255)
-        global minutes, startLevel, t
-        print(startLevel)
+        stroke(0)
+        global minutes, startLevel, t, startTime
         textSize(12)
         fill(0)
         text("Phosphate", 175, 375)
@@ -324,12 +326,17 @@ def draw():
         text("Nitrogenous Base", 485, 375)
         #TIMER#
         if startLevel == True: 
+            print(startLevel)
             millisecs = int(millis()/100)%10
-            seconds = int(millis()/1000)%60
+            seconds = int((millis()-startTime)/1000)%60
             if seconds >= 60:
                 minutes+= 1
             t = "Time Elapsed: " + str(minutes) + ":" + str(seconds) + "." + str(millisecs)
             text(t, 600, 100)
+        else:
+            millisecs = 0
+            seconds = 0
+            minutes = 0
         #if mouse over circle
         if p.overCircle() or s.overSugar() or nt.overRect():
             cursor(HAND)
@@ -369,14 +376,16 @@ def draw():
             s.drag()
     
         if lockP and lockA:
-            start = False
+            startLevel = False
             textSize(16)
             text(t, 300, 100)
             fill(238, 18, 255)
             textSize(30)
             rect(75, 450, 75, 45)
+            rect(700, 450, 88, 45)
             fill(0)
             text("Quit", 40, 460)
+            text("Reset", 660, 460)
             textSize(12) 
 
 #draw a DNA element
@@ -473,17 +482,9 @@ def checkU (x, y, width, height):
 def updateU(x, y):
     global overU
     overU = checkU (UX,UY,USize,USize)
-
-def display_page_num():
-    global page
-    textSize(20)
-    fill(200)
-    stroke(0)
-    strokeWeight(1.5)
-    text("Page #" + str(page), 10,580)
     
 def mouseClicked():
-    global page, startLevel
+    global page, startLevel, startTime
     # If on page 0 (menu) and construction game button clicked, set the page to 1 (B's page)
     if page == 0 and b.game1Btn():
         page = 3
@@ -494,19 +495,48 @@ def mouseClicked():
         # put mouse clicked code here for DNA constructiom
         page = 0
     elif page == 1 and b.game1Next():
+        p.x = 200
+        p.y = 400
+        s.x = 375
+        s.y = 400
+        nt.x = 530
+        nt.y = 400
         page = 4
+        startTime = millis()
         startLevel = True
     elif page == 3 and b.game1Play():
+        phosphate.x = 200
+        phosphate.y = 400
+        sugar.x = 375
+        sugar.y = 400
+        amino.x = 530
+        amino.y = 400
         page = 1
+    elif page == 4 and b.game1Quit():
+        page = 0
+    elif page == 4 and b.game1Reset():
+        p.x = 200
+        p.y = 400
+        s.x = 375
+        s.y = 400
+        nt.x = 530
+        nt.y = 400
+        startTime = millis()
+        startLevel = True
     
     elif page == 2:
         #mouse clicked code here for DNA pairs
         #declaring nucleotide_1, correct, and incorrect to be continuously used in mousePressed()
         global nucleotide_1
         global correct, incorrect
+        if incorrect == 3:
+            if overBack:
+                page = 0
+                correct = 0
+                incorrect = 0
         
         #checks if user clicked A to match with T or U, correct += 1 or incorrect += 1, generates a new nucleotide either way
-        if overA:
+        elif overA:
             if nucleotide_1 == T or nucleotide_1 == U:
                 correct += 1
                 nucleotide_1 = random.choice(nucleotide_list)
