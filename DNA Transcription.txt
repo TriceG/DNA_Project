@@ -106,12 +106,14 @@ def draw():
         text('Base Pairs', 275, 400)
     elif page == 1:   
         background(300)
-        display_page_num()
         # put draw code here for dna construction page
         ellipse(20, 20, 100, 100)
     elif page == 2:
         background (200)
         # put draw code here for transcription page
+        if incorrect == 3:
+            textSize(20)
+            text("3 strikes, you lose \n      click BACK", 290,150)
     
         #draw correct/incorrect counters
         fill(n1color)
@@ -200,7 +202,7 @@ def draw():
             fill(backColor)
         rect(backX, backY, back_size, back_size)
         textSize(30)
-        text("Back", 345, 405)
+        text("BACK", 338, 405)
         
 
 #logic for back button
@@ -272,9 +274,14 @@ def mouseClicked():
         #declaring nucleotide_1, correct, and incorrect to be continuously used in mousePressed()
         global nucleotide_1
         global correct, incorrect
+        if incorrect == 3:
+            if overBack:
+                page = 0
+                correct = 0
+                incorrect = 0
         
         #checks if user clicked A to match with T or U, correct += 1 or incorrect += 1, generates a new nucleotide either way
-        if overA:
+        elif overA:
             if nucleotide_1 == T or nucleotide_1 == U:
                 correct += 1
                 nucleotide_1 = random.choice(nucleotide_list)
